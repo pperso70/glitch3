@@ -72,7 +72,7 @@
                 var img = document.getElementById('cameraImage'); // Sélectionne l'élément d'image avec l'ID 'live'
                 img.src = 'data:image/jpg;base64,' + window.btoa(binary); // Définit la source de l'image avec les données binaires converties en base64
                 */
-
+                /*
                 console.log("Image reçue, taille:", event.data.byteLength, "bytes");
 
                 // Convertir les données binaires en Blob
@@ -90,7 +90,17 @@
                 }
 
                 console.log("URL de l'image créée:", imageUrl);
+                */
 
+                console.log("Image reçue, taille:", event.data.byteLength, "bytes");
+
+                // Convertir les données binaires en base64
+                let base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(event.data)));
+
+                // Afficher l'image
+                document.getElementById('cameraImage').src = 'data:image/jpeg;base64,' + base64String;
+
+                console.log("Premiers caractères base64:", base64String.substring(0, 50));
 
             }
         };
