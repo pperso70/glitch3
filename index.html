@@ -54,8 +54,20 @@
             } else {
                 //console.log("Image reçue, taille:", event.data.size, "bytes");
                 console.log("Image reçue, taille:", event.data.length, "bytes");
-                const imageUrl = URL.createObjectURL(new Blob([event.data]));
-                document.getElementById('cameraImage').src = imageUrl;
+                //const imageUrl = URL.createObjectURL(new Blob([event.data]));
+                //document.getElementById('cameraImage').src = imageUrl;
+
+                 // Cette fonction est exécutée lorsque le serveur envoie un message via WebSocket
+                var bytes = new Uint8Array(event.data); // Convertit les données binaires en tableau d'octets
+                var binary = '';
+                var len = bytes.byteLength;
+                for (var i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]); // Convertit les octets en une chaîne de caractères
+                }
+                var img = document.getElementById('cameraImage'); // Sélectionne l'élément d'image avec l'ID 'live'
+                img.src = 'data:image/jpg;base64,' + window.btoa(binary); // Définit la source de l'image avec les données binaires converties en base64
+   
+
             }
         };
 
