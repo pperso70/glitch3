@@ -41,7 +41,8 @@
         };
         */
         socket.onmessage = function(event) {
-            if (typeof event.data === 'string') {
+             if (event.data.length < 50) {
+            //if (typeof event.data === 'string') {
                 console.log("Données capteurs reçues : ", event.data);
                 const data = JSON.parse(event.data);
                 if (data.temperature) {
