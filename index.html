@@ -52,7 +52,8 @@
                 document.getElementById('humidity').textContent = data.humidity;
                 }
             } else {
-                console.log("Image reçue, taille:", event.data.size, "bytes");
+                //console.log("Image reçue, taille:", event.data.size, "bytes");
+                console.log("Image reçue, taille:", event.data.length, "bytes");
                 const imageUrl = URL.createObjectURL(new Blob([event.data]));
                 document.getElementById('cameraImage').src = imageUrl;
             }
