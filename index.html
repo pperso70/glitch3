@@ -106,7 +106,6 @@
                 console.log("Premiers caractères base64:", base64String.substring(0, 50));
                 */
 
-    
                 console.log("Image reçue, taille:", event.data.length, "bytes");
 
                 // Créer un Blob à partir des données binaires
@@ -132,13 +131,12 @@
                     console.log("Premiers octets:", Array.from(arr.slice(0, 16)).map(b => b.toString(16).padStart(2, '0')).join(' '));
                 }
                 reader.readAsArrayBuffer(blob.slice(0, 16));
-            };
 
 
 
 
-          //  }
-       // };
+            }
+        };
 
         function sendCommand(command) {
             console.log("Envoi de la commande : " + command);
