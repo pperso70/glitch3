@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrôle ESP32</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        button { font-size: 18px; margin: 10px; padding: 10px 20px; }
+        #data { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Contrôle ESP32</h1>
+    <button onclick="sendCommand('LED_ON')">Allumer LED</button>
+    <button onclick="sendCommand('LED_OFF')">Éteindre LED</button>
+    <div id="data">
+        <h2>Données du capteur</h2>
+        <p>Température: <span id="temperature">--</span>°C</p>
+        <p>Humidité: <span id="humidity">--</span>%</p>
+    </div>
+    <img id="cameraImage" alt="Image de la caméra">
+
+    <script>
+        //const socket = new WebSocket('wss://flash-wild-ketchup.glitch.me');
+        const socket = new WebSocket('wss://confirmed-careful-objective.glitch.me');
+        
+        socket.onopen = function(e) {
+            console.log("Connecté au WebSocket");
+        };
+        /*
+        socket.onmessage = function(event) {
+            console.log(`Données reçues: ${event.data}`);
+            const data = JSON.parse(event.data);
+            if (data.temperature) {
+                document.getElementById('temperature').textContent = data.temperature;
+            }
+            if (data.humidity) {
+                document.getElementById('humidity').textContent = data.humidity;
+            }
+        };
+        */
+        socket.onmessage = function(event) {
+            if (typeof event.data === 'string') {
+                console.log("Données capteurs reçues : ", event.data);
+                const data = JSON.parse(event.data);
+                if (data.temperature) {
+                document.getElementById('temperature').textContent = data.temperature;
+                }
+                if (data.humidity) {
+                document.getElementById('humidity').textContent = data.humidity;
+                }
+            } else {
+                console.log("Image reçue, taille:", event.data.size, "bytes");
+                const imageUrl = URL.createObjectURL(new Blob([event.data]));
+                document.getElementById('cameraImage').src = imageUrl;
+            }
+        };
+
+        function sendCommand(command) {
+            console.log("Envoi de la commande : " + command);
+            const message = JSON.stringify({command: command});
+            socket.send(message);
+        }
+    </script>
+</body>
+</html>
