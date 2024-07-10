@@ -64,6 +64,7 @@
                 for (var i = 0; i < len; i++) {
                     binary += String.fromCharCode(bytes[i]); // Convertit les octets en une chaîne de caractères
                 }
+                console.log("binary: ", binary);
                 var img = document.getElementById('cameraImage'); // Sélectionne l'élément d'image avec l'ID 'live'
                 img.src = 'data:image/jpg;base64,' + window.btoa(binary); // Définit la source de l'image avec les données binaires converties en base64
    
