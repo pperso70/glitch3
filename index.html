@@ -23,8 +23,9 @@
     <button onclick="sendCommand('LED_OFF')">Éteindre LED</button>
     <div id="data">
         <h2>Données du capteur</h2>
-        <p>Température: <span id="temperature">--</span>°C</p>
-        <p>Humidité: <span id="humidity">--</span>%</p>
+        <p>Position: <span id="position">--</span>/10</p>
+        <p>Température radiateur: <span id="temperature">--</span>°C</p>
+        <p>RSSI: <span id="rssi">--</span>%</p>
     </div>
     <img id="cameraImage" alt="Image de la caméra">
 
@@ -35,84 +36,22 @@
         socket.onopen = function(e) {
             console.log("Connecté au WebSocket");
         };
-        /*
-        socket.onmessage = function(event) {
-            console.log(`Données reçues: ${event.data}`);
-            const data = JSON.parse(event.data);
-            if (data.temperature) {
-                document.getElementById('temperature').textContent = data.temperature;
-            }
-            if (data.humidity) {
-                document.getElementById('humidity').textContent = data.humidity;
-            }
-        };
-        */
+        
         socket.onmessage = function(event) {
              if (event.data.length < 50) {
             //if (typeof event.data === 'string') {
                 console.log("Données capteurs reçues : ", event.data);
                 const data = JSON.parse(event.data);
+                if (data.position) {
+                document.getElementById('position').textContent = data.position;
+                }
                 if (data.temperature) {
                 document.getElementById('temperature').textContent = data.temperature;
                 }
-                if (data.humidity) {
-                document.getElementById('humidity').textContent = data.humidity;
+                if (data.rssi) {
+                document.getElementById('rssi').textContent = data.rssi;
                 }
             } else {
-                /*
-                //console.log("Image reçue, taille:", event.data.size, "bytes");
-                console.log("Image reçue, taille:", event.data.length, "bytes");
-                //const imageUrl = URL.createObjectURL(new Blob([event.data]));
-                //document.getElementById('cameraImage').src = imageUrl;
-
-                 // Cette fonction est exécutée lorsque le serveur envoie un message via WebSocket
-                var bytes = new Uint8Array(event.data); // Convertit les données binaires en tableau d'octets
-                var binary = '';
-                var len = bytes.byteLength;
-                for (var i = 0; i < len; i++) {
-                    binary += String.fromCharCode(bytes[i]); // Convertit les octets en une chaîne de caractères
-                }
-                console.log("event.data: ", event.data);
-                console.log("bytes: ", bytes);
-                console.log("len: ", len);
-                console.log("binary: ", binary);
-                var img = document.getElementById('cameraImage'); // Sélectionne l'élément d'image avec l'ID 'live'
-                img.src = 'data:image/jpg;base64,' + window.btoa(binary); // Définit la source de l'image avec les données binaires converties en base64
-                */
-                /*
-                console.log("Image reçue, taille:", event.data.byteLength, "bytes");
-
-                // Convertir les données binaires en Blob
-                const blob = new Blob([event.data], { type: 'image/jpeg' });
-
-                // Créer une URL pour le Blob
-                const imageUrl = URL.createObjectURL(blob);
-
-                // Afficher l'image
-                document.getElementById('cameraImage').src = imageUrl;
-
-                // Optionnel : libérer la mémoire quand l'image est chargée
-                document.getElementById('cameraImage').onload = function() {
-                    URL.revokeObjectURL(this.src);
-                }
-
-                console.log("URL de l'image créée:", imageUrl);
-                */
-                /*
-                //console.log("Image reçue, taille:", event.data.byteLength, "bytes");
-                console.log("Image reçue, taille:", event.data.length, "bytes");
-                console.log("Type de event.data:", typeof event.data);
-                //console.log("Contenu de event.data:", event.data);
-
-                // Convertir les données binaires en base64
-                let base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(event.data)));
-
-                // Afficher l'image
-                document.getElementById('cameraImage').src = 'data:image/jpeg;base64,' + base64String;
-
-                console.log("Premiers caractères base64:", base64String.substring(0, 50));
-                */
-
                 console.log("Image reçue, taille:", event.data.length, "bytes");
 
                 // Créer un Blob à partir des données binaires
@@ -138,10 +77,6 @@
                     console.log("Premiers octets:", Array.from(arr.slice(0, 16)).map(b => b.toString(16).padStart(2, '0')).join(' '));
                 }
                 reader.readAsArrayBuffer(blob.slice(0, 16));
-
-
-
-
             }
         };
 
