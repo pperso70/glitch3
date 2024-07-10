@@ -91,7 +91,7 @@
 
                 console.log("URL de l'image créée:", imageUrl);
                 */
-
+                /*
                 //console.log("Image reçue, taille:", event.data.byteLength, "bytes");
                 console.log("Image reçue, taille:", event.data.length, "bytes");
                 console.log("Type de event.data:", typeof event.data);
@@ -104,9 +104,41 @@
                 document.getElementById('cameraImage').src = 'data:image/jpeg;base64,' + base64String;
 
                 console.log("Premiers caractères base64:", base64String.substring(0, 50));
+                */
 
-            }
-        };
+    
+                console.log("Image reçue, taille:", event.data.length, "bytes");
+
+                // Créer un Blob à partir des données binaires
+                const blob = new Blob([event.data], { type: 'image/jpeg' });
+
+                // Créer une URL pour le Blob
+                const imageUrl = URL.createObjectURL(blob);
+
+                // Afficher l'image
+                document.getElementById('cameraImage').src = imageUrl;
+
+                // Libérer la mémoire une fois l'image chargée
+                document.getElementById('cameraImage').onload = function() {
+                    URL.revokeObjectURL(this.src);
+                }
+
+                console.log("URL de l'image créée:", imageUrl);
+
+                // Optionnel : Afficher les premiers octets pour vérification
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const arr = new Uint8Array(reader.result);
+                    console.log("Premiers octets:", Array.from(arr.slice(0, 16)).map(b => b.toString(16).padStart(2, '0')).join(' '));
+                }
+                reader.readAsArrayBuffer(blob.slice(0, 16));
+            };
+
+
+
+
+          //  }
+       // };
 
         function sendCommand(command) {
             console.log("Envoi de la commande : " + command);
