@@ -38,7 +38,7 @@
         };
         
         socket.onmessage = function(event) {
-             if (event.data.length < 50) {
+             if (event.data.length < 100) {
             //if (typeof event.data === 'string') {
                 console.log("Données capteurs reçues : ", event.data);
                 const data = JSON.parse(event.data);
