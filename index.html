@@ -52,6 +52,7 @@
                 document.getElementById('humidity').textContent = data.humidity;
                 }
             } else {
+                /*
                 //console.log("Image reçue, taille:", event.data.size, "bytes");
                 console.log("Image reçue, taille:", event.data.length, "bytes");
                 //const imageUrl = URL.createObjectURL(new Blob([event.data]));
@@ -70,7 +71,26 @@
                 console.log("binary: ", binary);
                 var img = document.getElementById('cameraImage'); // Sélectionne l'élément d'image avec l'ID 'live'
                 img.src = 'data:image/jpg;base64,' + window.btoa(binary); // Définit la source de l'image avec les données binaires converties en base64
-   
+                */
+
+                console.log("Image reçue, taille:", event.data.byteLength, "bytes");
+
+                // Convertir les données binaires en Blob
+                const blob = new Blob([event.data], { type: 'image/jpeg' });
+
+                // Créer une URL pour le Blob
+                const imageUrl = URL.createObjectURL(blob);
+
+                // Afficher l'image
+                document.getElementById('cameraImage').src = imageUrl;
+
+                // Optionnel : libérer la mémoire quand l'image est chargée
+                document.getElementById('cameraImage').onload = function() {
+                    URL.revokeObjectURL(this.src);
+                }
+
+                console.log("URL de l'image créée:", imageUrl);
+
 
             }
         };
