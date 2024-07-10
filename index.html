@@ -92,7 +92,8 @@
                 console.log("URL de l'image créée:", imageUrl);
                 */
 
-                console.log("Image reçue, taille:", event.data.byteLength, "bytes");
+                //console.log("Image reçue, taille:", event.data.byteLength, "bytes");
+                console.log("Image reçue, taille:", event.data.length, "bytes");
 
                 // Convertir les données binaires en base64
                 let base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(event.data)));
